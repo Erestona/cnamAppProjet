@@ -19,62 +19,42 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 
 	function  getSearchCalatogue (Request $request, Response $response, $args) {
 		
-	    $filtre = $args['filtre'];
-	    $flux = '[{ "id": 1, "name": "Produit 1", "category": "Catégorie 1", "price": 10 },
-		{ "id": 2, "name": "Produit 2", "category": "Catégorie 1", "price": 11 },
-		{ "id": 3, "name": "Produit 3", "category": "Catégorie 1", "price": 12 },
-		{ "id": 4, "name": "Produit 4", "category": "Catégorie 1", "price": 13 },
-		{ "id": 5, "name": "Produit 5", "category": "Catégorie 1", "price": 14 },
-	
-		{ "id": 6, "name": "Produit 6", "category": "Catégorie 2", "price": 10 },
-		{ "id": 7, "name": "Produit 7", "category": "Catégorie 2", "price": 12 },
-		{ "id": 8, "name": "Produit 8", "category": "Catégorie 2", "price": 14 },
-		{ "id": 9, "name": "Produit 9", "category": "Catégorie 2", "price": 16 },
-		{ "id": 10, "name": "Produit 10", "category": "Catégorie 2", "price": 18 },
-		
-		{ "id": 11, "name": "Produit 11", "category": "Catégorie 3", "price": 13 },
-		{ "id": 12, "name": "Produit 12", "category": "Catégorie 3", "price": 16 },
-		{ "id": 13, "name": "Produit 13", "category": "Catégorie 3", "price": 19 },
-		{ "id": 14, "name": "Produit 14", "category": "Catégorie 3", "price": 21 },
-		{ "id": 15, "name": "Produit 15", "category": "Catégorie 3", "price": 24 }]';		
-		//$response->getBody()->write($flux);
+	    $filtre = $args['filtre'];	
 
-		if ($filtre) {
-			$data = json_decode($flux, true); 
-	
-			$res = array_filter($data, function($obj) use ($filtre) { 
-				// Filtrer sur le nom, la catégorie et le prix
-				return strpos($obj["category"], $filtre) !== false ||
-					   strpos((string)$obj["price"], $filtre) !== false;
-			});
-	
-			$response->getBody()->write(json_encode(array_values($res)));
-		} else {
-			$response->getBody()->write($flux);
+		$productRepository = $entityManager->getRepository('product');
+		$products = $productRepository->findAll();
+
+		if (!preg_match("/^[a-zA-ZÀ-ÖØ-öø-ÿ '-âêîôûäëïöüàæçéèœùÂÊÎÔÛÄËÏÖÜÀÆÇÉÈŒÙ]{1,50}$/u", $filtre["price"])) { 
+			$err = true; 
+		}  
+
+		if (!preg_match("/^[a-zA-ZÀ-ÖØ-öø-ÿ '-âêîôûäëïöüàæçéèœùÂÊÎÔÛÄËÏÖÜÀÆÇÉÈŒÙ]{1,50}$/u", $filtre["category"])) { 
+			$err = true; 
+		}  
+
+		if (!$err) {
+			if($filtre){
+				$products = $productRepository->findBy(array('price' => $filtre["price"]));
+				$products += $productRepository->findBy(array('category' =>$filtre["category"]));
+				$response->getBody()->write(json_encode(array_values($products)));
+			} else {
+				$response->getBody()->write($products);
+			}
 		}
-	
+		else{
+			$response = $response->withStatus(500);
+		}
 		return addHeaders($response);
 	}
 
 	// API Nécessitant un Jwt valide
 	function getCatalogue (Request $request, Response $response, $args) {
-		$flux = '[{ "id": 1, "name": "Produit 1", "category": "Catégorie 1", "price": 10 },
-		{ "id": 2, "name": "Produit 2", "category": "Catégorie 1", "price": 11 },
-		{ "id": 3, "name": "Produit 3", "category": "Catégorie 1", "price": 12 },
-		{ "id": 4, "name": "Produit 4", "category": "Catégorie 1", "price": 13 },
-		{ "id": 5, "name": "Produit 5", "category": "Catégorie 1", "price": 14 },
-	
-		{ "id": 6, "name": "Produit 6", "category": "Catégorie 2", "price": 10 },
-		{ "id": 7, "name": "Produit 7", "category": "Catégorie 2", "price": 12 },
-		{ "id": 8, "name": "Produit 8", "category": "Catégorie 2", "price": 14 },
-		{ "id": 9, "name": "Produit 9", "category": "Catégorie 2", "price": 16 },
-		{ "id": 10, "name": "Produit 10", "category": "Catégorie 2", "price": 18 },
-		
-		{ "id": 11, "name": "Produit 11", "category": "Catégorie 3", "price": 13 },
-		{ "id": 12, "name": "Produit 12", "category": "Catégorie 3", "price": 16 },
-		{ "id": 13, "name": "Produit 13", "category": "Catégorie 3", "price": 19 },
-		{ "id": 14, "name": "Produit 14", "category": "Catégorie 3", "price": 21 },
-		{ "id": 15, "name": "Produit 15", "category": "Catégorie 3", "price": 24 }]';	    
+
+		$productsRepository = $entityManager->getRepository('product');
+		$products = $productsRepository->findAll();
+
+		$flux = $products;
+
 	    $response->getBody()->write($flux);
 	    
 	    return addHeaders ($response);
@@ -88,13 +68,100 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 	    return addHeaders ($response);
 	}
 
+	function createUser(Request $request, Response $response, $args){
+
+		
+		$payload = $request->getParsedBody();
+		
+		$firstname = $payload['firstname'];
+		if (!preg_match("/^[a-zA-ZÀ-ÖØ-öø-ÿ '-âêîôûäëïöüàæçéèœùÂÊÎÔÛÄËÏÖÜÀÆÇÉÈŒÙ]{1,50}$/u", $firstname)) { 
+			$err = true; 
+		}  
+
+		$lastname = $payload['lastname'];
+		if (!preg_match("/^[a-zA-ZÀ-ÖØ-öø-ÿ '-âêîôûäëïöüàæçéèœùÂÊÎÔÛÄËÏÖÜÀÆÇÉÈŒÙ]{1,50}$/u", $lastname)) { 
+			$err = true; 
+		}  
+
+		$adress = $payload['adress'];
+		if (!preg_match("/^[a-zA-ZÀ-ÖØ-öø-ÿ '-âêîôûäëïöüàæçéèœùÂÊÎÔÛÄËÏÖÜÀÆÇÉÈŒÙ]{1,50}$/u", $adress)) { 
+			$err = true; 
+		}  
+
+		$postalcode = $payload['postalcode'];
+		if (!preg_match("/^[a-zA-ZÀ-ÖØ-öø-ÿ '-âêîôûäëïöüàæçéèœùÂÊÎÔÛÄËÏÖÜÀÆÇÉÈŒÙ]{1,50}$/u", $postalcode)) { 
+			$err = true; 
+		}  
+
+		$city = $payload['city'];
+		if (!preg_match("/^[a-zA-ZÀ-ÖØ-öø-ÿ '-âêîôûäëïöüàæçéèœùÂÊÎÔÛÄËÏÖÜÀÆÇÉÈŒÙ]{1,50}$/u", $city)) { 
+			$err = true; 
+		}  
+
+		$email = $payload['email'];
+		if (!preg_match("/^[a-zA-ZÀ-ÖØ-öø-ÿ '-âêîôûäëïöüàæçéèœùÂÊÎÔÛÄËÏÖÜÀÆÇÉÈŒÙ]{1,50}$/u", $email)) { 
+			$err = true; 
+		}  
+
+		$sex = $payload['sex'];
+		if (!preg_match("/^[a-zA-ZÀ-ÖØ-öø-ÿ '-âêîôûäëïöüàæçéèœùÂÊÎÔÛÄËÏÖÜÀÆÇÉÈŒÙ]{1,50}$/u", $sex)) { 
+			$err = true; 
+		}  
+
+		$phonenumber = $payload['phonenumber'];
+		if (!preg_match("/^[a-zA-ZÀ-ÖØ-öø-ÿ '-âêîôûäëïöüàæçéèœùÂÊÎÔÛÄËÏÖÜÀÆÇÉÈŒÙ]{1,50}$/u", $phonenumber)) { 
+			$err = true; 
+		}  
+
+		$login = $payload['login'];
+		if (!preg_match("/^[a-zA-ZÀ-ÖØ-öø-ÿ '-âêîôûäëïöüàæçéèœùÂÊÎÔÛÄËÏÖÜÀÆÇÉÈŒÙ]{1,50}$/u", $login)) { 
+			$err = true; 
+		}  
+
+		$password = $payload['password'];
+		if (!preg_match("/^[a-zA-ZÀ-ÖØ-öø-ÿ '-âêîôûäëïöüàæçéèœùÂÊÎÔÛÄËÏÖÜÀÆÇÉÈŒÙ]{1,50}$/u", $password)) { 
+			$err = true; 
+		}  
+
+		if (!$err) {
+
+			$utilisateur = new Utilisateurs;
+			$utilisateur->setPrenom($firstname);
+			$utilisateur->setNom($lastname);
+			$utilisateur->setAdress($adress);
+			$utilisateur->setCodepostal($postalcode);
+			$utilisateur->setVille($city);
+			$utilisateur->setEmail($email);
+			$utilisateur->setSexe($sex);
+			$utilisateur->setLogin($login);
+			$utilisateur->setPassword($password);
+			$utilisateur->setTelephone($phonenumber);
+
+			$entityManager->persist($utilisateur);
+			$entityManager->flush();
+
+			//?
+			$response = createJwT ($response);
+			$response->getBody()->write($flux );
+			
+			return addHeaders ($response);
+		}
+		else{
+			return $response->withStatus(401); 
+		}
+	}
+
 	// API Nécessitant un Jwt valide
 	function getUtilisateur (Request $request, Response $response, $args) {
 	    
 	    $payload = getJWTToken($request);
 	    $login  = $payload->userid;
-	    
-		$flux = '{"nom":"martin","prenom":"jean"}';
+		
+		$utilisateursRepository = $entityManager->getRepository('product');
+
+		$utilisateur = $utilisateursRepository->findBy(array('login' => $login));
+		
+		$flux = $utilisateur;
 	    
 	    $response->getBody()->write($flux);
 	    
@@ -108,10 +175,22 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 
 		$login = $payload['login'];
 		$password = $payload['password'];
-	
-		if ($login === 'emma' && $password === 'toto') {
 
-			$flux = '{"nom":"martin","prenom":"jean"}';
+		if (!preg_match("/^[a-zA-ZÀ-ÖØ-öø-ÿ '-âêîôûäëïöüàæçéèœùÂÊÎÔÛÄËÏÖÜÀÆÇÉÈŒÙ]{1,50}$/u", $login)) { 
+			$err = true; 
+		}  
+
+		if (!preg_match("/^[a-zA-ZÀ-ÖØ-öø-ÿ '-âêîôûäëïöüàæçéèœùÂÊÎÔÛÄËÏÖÜÀÆÇÉÈŒÙ]{1,50}$/u", $password)) { 
+			$err = true; 
+		}  
+
+		$utilisateursRepository = $entityManager->getRepository('product');
+
+		$utilisateur = $utilisateursRepository->findBy(array('login' => $login, 'password' =>$password));
+	
+		if ($utilisateur!=null || $err) {
+
+			$flux = $utilisateur;
 			
 			$response = createJwT ($response);
 			$response->getBody()->write($flux );
