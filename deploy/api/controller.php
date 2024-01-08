@@ -36,11 +36,11 @@ require_once __DIR__ . '/../bootstrap.php';
 
 		if (!$err) {
 			if($filtre){
-				$products = $productRepository->findBy(array('price' => '10')); //$filtre["price"]
-				$products += $productRepository->findBy(array('category' => 'Category 1')); //$filtre["category"]
+				$products = $productRepository->findBy(array('price' => $filtre["price"]));
+				$products += $productRepository->findBy(array('category' =>$filtre["category"]));
 				$response->getBody()->write(json_encode(array_values($products)));
 			} else {
-				$response->getBody()->write($products);
+				$response->getBody()->write(json_encode($products));
 			}
 		}
 		else{
@@ -58,7 +58,7 @@ require_once __DIR__ . '/../bootstrap.php';
 
 		$flux = $products;
 
-	    $response->getBody()->write($flux);
+	    $response->getBody()->write(json_encode($flux));
 	    
 	    return addHeaders ($response);
 	}
@@ -175,7 +175,7 @@ require_once __DIR__ . '/../bootstrap.php';
 		
 		$flux = $utilisateur;
 	    
-	    $response->getBody()->write($flux);
+	    $response->getBody()->write(json_encode($flux));
 	    
 	    return addHeaders ($response);
 	}
@@ -207,7 +207,7 @@ require_once __DIR__ . '/../bootstrap.php';
 			$flux = $utilisateur;
 			
 			$response = createJwT ($response);
-			$response->getBody()->write($flux );
+			$response->getBody()->write(json_encode($flux ));
 			
 			return addHeaders ($response);
 		}
