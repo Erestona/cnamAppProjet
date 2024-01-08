@@ -16,6 +16,3 @@
 	);
 
 	$entityManager = EntityManager::create($conn, $config);
-
-
-
