@@ -71,31 +71,44 @@ require_once __DIR__ . '/../bootstrap.php';
 
 	function createUser(Request $request, Response $response, $args){
 
-		
+		global $entityManager;
+
 		$payload = $request->getParsedBody();
-		
-		$firstname = $payload['firstname'];
-		if (!preg_match("/^[a-zA-ZÀ-ÖØ-öø-ÿ '-âêîôûäëïöüàæçéèœùÂÊÎÔÛÄËÏÖÜÀÆÇÉÈŒÙ]{1,50}$/u", $firstname)) { 
+		$err = false;
+
+		$nom = $body['nom'] ?? "";
+		$prenom = $body['prenom'] ?? "";
+		$adresse = $body['adresse'] ?? "";
+		$codepostal = $body['codepostal'] ?? "";
+		$ville = $body['ville'] ?? "";
+		$email = $body['email'] ?? "";
+		$sexe = $body['sexe'] ?? "";
+		$login = $body['login'] ?? "";
+		$password = $body['password'] ?? "";
+		$telephone = $body['telephone'] ?? "";
+
+		$prenom = $payload['prenom'];
+		if (!preg_match("/^[a-zA-ZÀ-ÖØ-öø-ÿ '-âêîôûäëïöüàæçéèœùÂÊÎÔÛÄËÏÖÜÀÆÇÉÈŒÙ]{1,50}$/u", $prenom)) { 
 			$err = true; 
 		}  
 
-		$lastname = $payload['lastname'];
-		if (!preg_match("/^[a-zA-ZÀ-ÖØ-öø-ÿ '-âêîôûäëïöüàæçéèœùÂÊÎÔÛÄËÏÖÜÀÆÇÉÈŒÙ]{1,50}$/u", $lastname)) { 
+		$nom = $payload['nom'];
+		if (!preg_match("/^[a-zA-ZÀ-ÖØ-öø-ÿ '-âêîôûäëïöüàæçéèœùÂÊÎÔÛÄËÏÖÜÀÆÇÉÈŒÙ]{1,50}$/u", $nom)) { 
 			$err = true; 
 		}  
 
-		$adress = $payload['adress'];
-		if (!preg_match("/^[a-zA-ZÀ-ÖØ-öø-ÿ '-âêîôûäëïöüàæçéèœùÂÊÎÔÛÄËÏÖÜÀÆÇÉÈŒÙ]{1,50}$/u", $adress)) { 
+		$adresse = $payload['adresse'];
+		if (!preg_match("/^[a-zA-ZÀ-ÖØ-öø-ÿ '-âêîôûäëïöüàæçéèœùÂÊÎÔÛÄËÏÖÜÀÆÇÉÈŒÙ]{1,50}$/u", $adresse)) { 
 			$err = true; 
 		}  
 
-		$postalcode = $payload['postalcode'];
-		if (!preg_match("/^[a-zA-ZÀ-ÖØ-öø-ÿ '-âêîôûäëïöüàæçéèœùÂÊÎÔÛÄËÏÖÜÀÆÇÉÈŒÙ]{1,50}$/u", $postalcode)) { 
+		$codepostal = $payload['codepostal'];
+		if (!preg_match("/^[a-zA-ZÀ-ÖØ-öø-ÿ '-âêîôûäëïöüàæçéèœùÂÊÎÔÛÄËÏÖÜÀÆÇÉÈŒÙ]{1,50}$/u", $codepostal)) { 
 			$err = true; 
 		}  
 
-		$city = $payload['city'];
-		if (!preg_match("/^[a-zA-ZÀ-ÖØ-öø-ÿ '-âêîôûäëïöüàæçéèœùÂÊÎÔÛÄËÏÖÜÀÆÇÉÈŒÙ]{1,50}$/u", $city)) { 
+		$ville = $payload['ville'];
+		if (!preg_match("/^[a-zA-ZÀ-ÖØ-öø-ÿ '-âêîôûäëïöüàæçéèœùÂÊÎÔÛÄËÏÖÜÀÆÇÉÈŒÙ]{1,50}$/u", $ville)) { 
 			$err = true; 
 		}  
 
@@ -104,13 +117,13 @@ require_once __DIR__ . '/../bootstrap.php';
 			$err = true; 
 		}  
 
-		$sex = $payload['sex'];
-		if (!preg_match("/^[a-zA-ZÀ-ÖØ-öø-ÿ '-âêîôûäëïöüàæçéèœùÂÊÎÔÛÄËÏÖÜÀÆÇÉÈŒÙ]{1,50}$/u", $sex)) { 
+		$sexe = $payload['sexe'];
+		if (!preg_match("/^[a-zA-ZÀ-ÖØ-öø-ÿ '-âêîôûäëïöüàæçéèœùÂÊÎÔÛÄËÏÖÜÀÆÇÉÈŒÙ]{1,50}$/u", $sexe)) { 
 			$err = true; 
 		}  
 
-		$phonenumber = $payload['phonenumber'];
-		if (!preg_match("/^[a-zA-ZÀ-ÖØ-öø-ÿ '-âêîôûäëïöüàæçéèœùÂÊÎÔÛÄËÏÖÜÀÆÇÉÈŒÙ]{1,50}$/u", $phonenumber)) { 
+		$telephone = $payload['telephone'];
+		if (!preg_match("/^[a-zA-ZÀ-ÖØ-öø-ÿ '-âêîôûäëïöüàæçéèœùÂÊÎÔÛÄËÏÖÜÀÆÇÉÈŒÙ]{1,50}$/u", $telephone)) { 
 			$err = true; 
 		}  
 
@@ -125,26 +138,27 @@ require_once __DIR__ . '/../bootstrap.php';
 		}  
 
 		if (!$err) {
+
 			error_log(print_r($entityManager, true));
 			$utilisateur = new Utilisateurs;
-			$utilisateur->setPrenom($firstname);
-			$utilisateur->setNom($lastname);
-			$utilisateur->setAdresse($adress);
-			$utilisateur->setCodepostal($postalcode);
-			$utilisateur->setVille($city);
+			$utilisateur->setPrenom($prenom);
+			$utilisateur->setNom($nom);
+			$utilisateur->setAdresse($adresse);
+			$utilisateur->setCodepostal($codepostal);
+			$utilisateur->setVille($ville);
 			$utilisateur->setEmail($email);
-			$utilisateur->setSexe($sex);
+			$utilisateur->setSexe($sexe);
 			$utilisateur->setLogin($login);
 			$utilisateur->setPassword($password);
-			$utilisateur->setTelephone($phonenumber);
+			$utilisateur->setTelephone($telephone);
 
 			$entityManager->persist($utilisateur);
 			$entityManager->flush();
-
 		}
 		else{
-			return $response->withStatus(401); 
+			return $response->withStatus(404); 
 		}
+		return addHeaders($response);
 	}
 
 	// API Nécessitant un Jwt valide
@@ -168,7 +182,7 @@ require_once __DIR__ . '/../bootstrap.php';
 	function postLogin (Request $request, Response $response, $args) {  
 
 		$payload = $request->getParsedBody();
-
+		
 		$login = $payload['login'];
 		$password = $payload['password'];
 
