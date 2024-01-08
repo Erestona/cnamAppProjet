@@ -36,8 +36,8 @@ require_once __DIR__ . '/../bootstrap.php';
 
 		if (!$err) {
 			if($filtre){
-				$products = $productRepository->findBy(array('price' => $filtre["price"]));
-				$products += $productRepository->findBy(array('category' =>$filtre["category"]));
+				$products = $productRepository->findBy(array('price' => '10')); //$filtre["price"]
+				$products += $productRepository->findBy(array('category' => 'Category 1')); //$filtre["category"]
 				$response->getBody()->write(json_encode(array_values($products)));
 			} else {
 				$response->getBody()->write($products);
@@ -158,7 +158,7 @@ require_once __DIR__ . '/../bootstrap.php';
 			$entityManager->flush();
 		}
 		else{
-			return $response->withStatus(404); 
+			return $response->withStatus(401); 
 		}
 		return addHeaders($response);
 	}
