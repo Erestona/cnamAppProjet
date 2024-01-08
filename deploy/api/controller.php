@@ -43,11 +43,12 @@ require_once __DIR__ . '/../bootstrap.php';
 
 				$products = $entityManager->getRepository("Product")->createQueryBuilder('p')
 					->where('p.price like :price')
-					->andWhere('p.category LIKE :category')
+					->orWhere('p.category LIKE :category')
 					->setParameter('price', $filtre)
 					->setParameter('category', $filtre)
 					->getQuery()
 					->getResult();
+
 				$response->getBody()->write(json_encode(($products)));
 			} else {
 				$response->getBody()->write(json_encode($products));
