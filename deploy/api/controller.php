@@ -38,7 +38,7 @@ require_once __DIR__ . '/../bootstrap.php';
 			if($filtre){
 				$products = $productRepository->findBy(array('price' => $filtre));
 				$products += $productRepository->findBy(array('category' =>$filtre));
-				$response->getBody()->write(json_encode(array_values($products)));
+				$response->getBody()->write(json_encode(($products)));
 			} else {
 				$response->getBody()->write(json_encode($products));
 			}
