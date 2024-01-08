@@ -26,18 +26,18 @@ require_once __DIR__ . '/../bootstrap.php';
 		$productRepository = $entityManager->getRepository('Product');
 		$products = $productRepository->findAll();
 
-		if (!preg_match("/^[a-zA-ZÀ-ÖØ-öø-ÿ '-âêîôûäëïöüàæçéèœùÂÊÎÔÛÄËÏÖÜÀÆÇÉÈŒÙ]{1,50}$/u", $filtre["price"])) { 
+		if (!preg_match("/^[a-zA-ZÀ-ÖØ-öø-ÿ '-âêîôûäëïöüàæçéèœùÂÊÎÔÛÄËÏÖÜÀÆÇÉÈŒÙ]{1,50}$/u", $filtre)) { 
 			$err = true; 
 		}  
 
-		if (!preg_match("/^[a-zA-ZÀ-ÖØ-öø-ÿ '-âêîôûäëïöüàæçéèœùÂÊÎÔÛÄËÏÖÜÀÆÇÉÈŒÙ]{1,50}$/u", $filtre["category"])) { 
+		if (!preg_match("/^[a-zA-ZÀ-ÖØ-öø-ÿ '-âêîôûäëïöüàæçéèœùÂÊÎÔÛÄËÏÖÜÀÆÇÉÈŒÙ]{1,50}$/u", $filtre)) { 
 			$err = true; 
 		}  
 
 		if (!$err) {
 			if($filtre){
-				$products = $productRepository->findBy(array('price' => $filtre["price"]));
-				$products += $productRepository->findBy(array('category' =>$filtre["category"]));
+				$products = $productRepository->findBy(array('price' => $filtre));
+				$products += $productRepository->findBy(array('category' =>$filtre));
 				$response->getBody()->write(json_encode(array_values($products)));
 			} else {
 				$response->getBody()->write(json_encode($products));
