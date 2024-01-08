@@ -23,7 +23,7 @@ require_once __DIR__ . '/../bootstrap.php';
 		global $entityManager;
 	    $filtre = $args['filtre'];	
 
-		$productRepository = $entityManager->getRepository('product');
+		$productRepository = $entityManager->getRepository('Product');
 		$products = $productRepository->findAll();
 
 		if (!preg_match("/^[a-zA-ZÀ-ÖØ-öø-ÿ '-âêîôûäëïöüàæçéèœùÂÊÎÔÛÄËÏÖÜÀÆÇÉÈŒÙ]{1,50}$/u", $filtre["price"])) { 
@@ -53,7 +53,7 @@ require_once __DIR__ . '/../bootstrap.php';
 	function getCatalogue (Request $request, Response $response, $args) {
 
 		global $entityManager;
-		$productsRepository = $entityManager->getRepository('product');
+		$productsRepository = $entityManager->getRepository('Product');
 		$products = $productsRepository->findAll();
 
 		$flux = $products;
@@ -169,7 +169,7 @@ require_once __DIR__ . '/../bootstrap.php';
 	    $payload = getJWTToken($request);
 	    $login  = $payload->userid;
 		
-		$utilisateursRepository = $entityManager->getRepository('product');
+		$utilisateursRepository = $entityManager->getRepository('Product');
 
 		$utilisateur = $utilisateursRepository->findBy(array('login' => $login));
 		
@@ -198,7 +198,7 @@ require_once __DIR__ . '/../bootstrap.php';
 			$err = true; 
 		}  
 
-		$utilisateursRepository = $entityManager->getRepository('product');
+		$utilisateursRepository = $entityManager->getRepository('Product');
 
 		$utilisateur = $utilisateursRepository->findBy(array('login' => $login, 'password' =>$password));
 	
