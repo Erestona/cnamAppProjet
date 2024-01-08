@@ -166,6 +166,7 @@ require_once __DIR__ . '/../bootstrap.php';
 			$utilisateur->setEmail($email);
 			$utilisateur->setSexe($sexe);
 			$utilisateur->setLogin($login);
+			$password = password_hash($password,PASSWORD_DEFAULT);
 			$utilisateur->setPassword($password);
 			$utilisateur->setTelephone($telephone);
 
@@ -215,9 +216,10 @@ require_once __DIR__ . '/../bootstrap.php';
 
 		$utilisateursRepository = $entityManager->getRepository('Utilisateurs');
 
-		$utilisateur = $utilisateursRepository->findBy(array('login' => $login, 'password' =>$password));
+		//password_verify($password, $hashed_password)
+		$utilisateur = $utilisateursRepository->findBy(array('login' => $login));
 	
-		if ($utilisateur!=null || $err) {
+		if (password_verify($password,$utilisateur->login) || $err) {
 
 			$flux = $utilisateur;
 			
