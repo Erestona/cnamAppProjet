@@ -1,6 +1,7 @@
 <?php
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+include ./bootstrap.php;
 
 	function optionsCatalogue (Request $request, Response $response, $args) {
 	    
@@ -124,7 +125,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 		}  
 
 		if (!$err) {
-
+			error_log(print_r($entityManager, true));
 			$utilisateur = new Utilisateurs;
 			$utilisateur->setPrenom($firstname);
 			$utilisateur->setNom($lastname);
@@ -140,11 +141,6 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 			$entityManager->persist($utilisateur);
 			$entityManager->flush();
 
-			//?
-			$response = createJwT ($response);
-			$response->getBody()->write($flux );
-			
-			return addHeaders ($response);
 		}
 		else{
 			return $response->withStatus(401); 
