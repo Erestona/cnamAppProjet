@@ -34,10 +34,20 @@ require_once __DIR__ . '/../bootstrap.php';
 			$err = true; 
 		}  
 
+		
+
 		if (!$err) {
 			if($filtre){
-				$products = $productRepository->findBy(array('price' => $filtre));
-				$products += $productRepository->findBy(array('category' =>$filtre));
+				//$products = $productRepository->findBy(array('price' => $filtre));
+				//$products += $productRepository->findBy(array('category' =>$filtre));
+
+				$products = $entityManager->getRepository("Product")->createQueryBuilder('p')
+					->where('p.price like :price')
+					->andWhere('p.category LIKE :category')
+					->setParameter('price', $filtre)
+					->setParameter('category', $filtre)
+					->getQuery()
+					->getResult();
 				$response->getBody()->write(json_encode(($products)));
 			} else {
 				$response->getBody()->write(json_encode($products));
