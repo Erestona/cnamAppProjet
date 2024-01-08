@@ -20,6 +20,7 @@ require_once __DIR__ . '/../bootstrap.php';
 
 	function  getSearchCalatogue (Request $request, Response $response, $args) {
 		
+		global $entityManager;
 	    $filtre = $args['filtre'];	
 
 		$productRepository = $entityManager->getRepository('product');
@@ -51,6 +52,7 @@ require_once __DIR__ . '/../bootstrap.php';
 	// API Nécessitant un Jwt valide
 	function getCatalogue (Request $request, Response $response, $args) {
 
+		global $entityManager;
 		$productsRepository = $entityManager->getRepository('product');
 		$products = $productsRepository->findAll();
 
@@ -180,6 +182,8 @@ require_once __DIR__ . '/../bootstrap.php';
 
 	// APi d'authentification générant un JWT
 	function postLogin (Request $request, Response $response, $args) {  
+
+		global $entityManager;
 
 		$payload = $request->getParsedBody();
 		
