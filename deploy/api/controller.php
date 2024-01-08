@@ -169,7 +169,7 @@ require_once __DIR__ . '/../bootstrap.php';
 	    $payload = getJWTToken($request);
 	    $login  = $payload->userid;
 		
-		$utilisateursRepository = $entityManager->getRepository('Product');
+		$utilisateursRepository = $entityManager->getRepository('Utilisateurs');
 
 		$utilisateur = $utilisateursRepository->findBy(array('login' => $login));
 		
