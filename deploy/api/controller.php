@@ -217,9 +217,9 @@ require_once __DIR__ . '/../bootstrap.php';
 		$utilisateursRepository = $entityManager->getRepository('Utilisateurs');
 
 		//password_verify($password, $hashed_password)
-		$utilisateur = $utilisateursRepository->findBy(array('login' => $login));
+		$utilisateur = $utilisateursRepository->findOneBy(array('login' => $login));
 	
-		if (password_verify($password,$utilisateur->getPassword()) && !$err) {
+		if ($utilisateur!= null && password_verify($password,$utilisateur->getPassword()) && !$err) {
 
 			$flux = $utilisateur;
 			
