@@ -198,7 +198,7 @@ require_once __DIR__ . '/../bootstrap.php';
 			$err = true; 
 		}  
 
-		$utilisateursRepository = $entityManager->getRepository('Product');
+		$utilisateursRepository = $entityManager->getRepository('Utilisateurs');
 
 		$utilisateur = $utilisateursRepository->findBy(array('login' => $login, 'password' =>$password));
 	
