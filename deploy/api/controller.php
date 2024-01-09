@@ -200,7 +200,7 @@ require_once __DIR__ . '/../bootstrap.php';
 	function postLogin (Request $request, Response $response, $args) {  
 
 		global $entityManager;
-
+		$err = false;
 		$payload = $request->getParsedBody();
 		
 		$login = $payload['login'];
