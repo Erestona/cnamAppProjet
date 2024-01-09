@@ -69,13 +69,31 @@ require_once __DIR__ . '/../bootstrap.php';
 	function getCatalogue (Request $request, Response $response, $args) {
 
 		global $entityManager;
-		$productsRepository = $entityManager->getRepository('Product');
-		$products = $productsRepository->findAll();
+		// $productsRepository = $entityManager->getRepository('Product');
+		// $products = $productsRepository->findAll();
 
-		$flux = $products;
+		// $flux = $products;
 
-	    $response->getBody()->write(json_encode($flux));
+	    // $response->getBody()->write(json_encode($flux));
 	    
+
+		$produitRepository = $entityManager->getRepository('Product');
+		$produits = $produitRepository->findAll();
+		if ($produits) {
+			$data = array();
+			foreach ($produits as $produit) {
+				$data[] = array(
+					'id' => $produit->getId(),
+					'name' => $produit->getName(),
+					'price' => $produit->getPrice(),
+					'category' => $produit->getCategory()
+				);
+			}
+			$response = addHeaders($response);
+			$response = createJwT($response);
+			$response->getBody()->write(json_encode($data));
+
+
 	    return addHeaders ($response);
 	}
 
