@@ -23,18 +23,12 @@ require_once __DIR__ . '/../bootstrap.php';
 		global $entityManager;
 	    $filtre = $args['filtre'];	
 
-		$productRepository = $entityManager->getRepository('Product');
-		$products = $productRepository->findAll();
+		// $productRepository = $entityManager->getRepository('Product');
+		// $products = $productRepository->findAll();
 
-		if (!preg_match("/^[a-zA-ZÀ-ÖØ-öø-ÿ '-âêîôûäëïöüàæçéèœùÂÊÎÔÛÄËÏÖÜÀÆÇÉÈŒÙ]{1,50}$/u", $filtre)) { 
-			$err = true; 
-		}  
-
-		if (!preg_match("/^[a-zA-ZÀ-ÖØ-öø-ÿ '-âêîôûäëïöüàæçéèœùÂÊÎÔÛÄËÏÖÜÀÆÇÉÈŒÙ]{1,50}$/u", $filtre)) { 
-			$err = true; 
-		}  
-
-		
+		// if (!preg_match("/^[a-zA-ZÀ-ÖØ-öø-ÿ '-âêîôûäëïöüàæçéèœùÂÊÎÔÛÄËÏÖÜÀÆÇÉÈŒÙ]{1,50}$/u", $filtre)) { 
+		// 	$err = true; 
+		// }  
 
 		if (!$err) {
 			if($filtre){
