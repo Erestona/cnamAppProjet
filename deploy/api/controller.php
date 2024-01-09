@@ -42,14 +42,9 @@ require_once __DIR__ . '/../bootstrap.php';
 				//$products += $productRepository->findBy(array('category' =>$filtre));
 
 				$products = $entityManager->getRepository("Product")->createQueryBuilder('p')
-					->where('p.price LIKE :price')
-					->setParameter('price', $filtre)
-					->getQuery()
-					->getResult();
-
-				$products += $entityManager->getRepository("Product")->createQueryBuilder('p')
-					->where('p.category LIKE :category')
-					->setParameter('category', $filtre)
+					->where('p.price LIKE :price OR p.category LIKE :category')
+					->setParameter('price', '%'.$filtre.'%')
+					->setParameter('category', '%'.$filtre.'%')
 					->getQuery()
 					->getResult();
 
