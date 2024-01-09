@@ -93,7 +93,7 @@ require_once __DIR__ . '/../bootstrap.php';
 			$response = createJwT($response);
 			$response->getBody()->write(json_encode($data));
 
-
+		}
 	    return addHeaders ($response);
 	}
 
