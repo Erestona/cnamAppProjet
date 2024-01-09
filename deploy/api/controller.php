@@ -56,11 +56,11 @@ require_once __DIR__ . '/../bootstrap.php';
 				$response->getBody()->write(json_encode(($products)));
 			} else {
 
-				$response->getBody()->write(json_encode($products));
+				$response = getCatalogue($request,$response,$args);
 			}
 		}
 		else{
-			$response = getCatalogue($request,$response,$args);
+			return $response->withStatus(401);
 		}
 		return addHeaders($response);
 	}
