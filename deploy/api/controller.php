@@ -217,18 +217,21 @@ require_once __DIR__ . '/../bootstrap.php';
 
 		if(!$err)
 		{
+			/*
 			$utilisateur = $entityManager->getRepository('Utilisateurs')->createQueryBuilder('u')
 			->where('u.login LIKE :login')
 			->setParameter('login', $login)
 			->getQuery()
 			->getResult();
-
-		foreach ($utilisateur as $client) {
+			*/
+			$utilisateur = $utilisateursRepository->findOneBy(array('login' => $login));
+			
+			
 			$data[] = array(
-				'name' => $client->getNom(),
-				'surname' => $client->getPrenom()
+				'name' => $utilisateur->getNom(),
+				'surname' => $utilisateur->getPrenom()
 			);
-		}
+		
 		
 		$response = addHeaders($response);
 		$response = createJwT($response);
@@ -238,7 +241,7 @@ require_once __DIR__ . '/../bootstrap.php';
 		}else{
 			return $response->withStatus(401); 
 		}
-		
+	
 	}
 
 	// APi d'authentification générant un JWT
