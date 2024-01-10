@@ -205,7 +205,7 @@ require_once __DIR__ . '/../bootstrap.php';
 	    
 		global $entityManager;
 	    $payload = getJWTToken($request);
-	    $login  = $payload->userid;
+	    $login = $body['login'] ?? "";
 		
 		$utilisateursRepository = $entityManager->getRepository('Utilisateurs');
 
