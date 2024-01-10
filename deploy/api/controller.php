@@ -35,14 +35,27 @@ require_once __DIR__ . '/../bootstrap.php';
 				//$products = $productRepository->findBy(array('price' => $filtre));
 				//$products += $productRepository->findBy(array('category' =>$filtre));
 
-				$products = $entityManager->getRepository("Product")->createQueryBuilder('p')
+				$produits = $entityManager->getRepository("Product")->createQueryBuilder('p')
 					->where('p.price LIKE :price OR p.category LIKE :category')
 					->setParameter('price', '%'.$filtre.'%')
 					->setParameter('category', '%'.$filtre.'%')
 					->getQuery()
 					->getResult();
 
-				$response->getBody()->write(json_encode(($products)));
+				$data = array();
+				foreach ($produits as $produit) 
+				{
+					$data[] = array(
+					'id' => $produit->getId(),
+					'name' => $produit->getName(),
+					'price' => $produit->getPrice(),
+					'category' => $produit->getCategory()
+					);
+				}
+			$response = addHeaders($response);
+			$response = createJwT($response);
+			$response->getBody()->write(json_encode($data));
+			//$response->getBody()->write(json_encode(($produits)));
 			} else {
 
 				$response = getCatalogue($request,$response,$args);
