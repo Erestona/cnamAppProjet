@@ -209,7 +209,7 @@ require_once __DIR__ . '/../bootstrap.php';
 
 	    $login = $body['login'] ?? "";
 		
-		var_dump($login);
+		var_dump($body);
 
 		if (!preg_match("/^[a-zA-ZÀ-ÖØ-öø-ÿ '-âêîôûäëïöüàæçéèœùÂÊÎÔÛÄËÏÖÜÀÆÇÉÈŒÙ]{1,50}$/u", $login)) { 
 			$err = true; 
