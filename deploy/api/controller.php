@@ -203,6 +203,7 @@ require_once __DIR__ . '/../bootstrap.php';
 	// API Nécessitant un Jwt valide
 	function getUtilisateur (Request $request, Response $response, $args) {
 	    
+		global $entityManager;
 	    $payload = getJWTToken($request);
 	    $login  = $payload->userid;
 		
