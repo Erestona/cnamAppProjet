@@ -10,7 +10,7 @@
 	// API Nécessitant un Jwt valide
 	$app->get('/api/catalogue', 'getCatalogue');
 
-	$app->options('/api/utilisateur', 'optionsUtilisateur');
+	//$app->options('/api/utilisateur', 'optionsUtilisateur');
 
 	// API Nécessitant un Jwt valide
 	$app->get('/api/utilisateur', 'getUtilisateur');
