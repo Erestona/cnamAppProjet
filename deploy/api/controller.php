@@ -209,6 +209,8 @@ require_once __DIR__ . '/../bootstrap.php';
 
 	    $login = $body['login'] ?? "";
 		
+		var_dump($login);
+
 		if (!preg_match("/^[a-zA-ZÀ-ÖØ-öø-ÿ '-âêîôûäëïöüàæçéèœùÂÊÎÔÛÄËÏÖÜÀÆÇÉÈŒÙ]{1,50}$/u", $login)) { 
 			$err = true; 
 		}  
@@ -234,7 +236,7 @@ require_once __DIR__ . '/../bootstrap.php';
 	    return addHeaders ($response);
 	    
 		}else{
-			return $response->withStatus(500); 
+			return $response->withStatus(401); 
 		}
 		
 	}
