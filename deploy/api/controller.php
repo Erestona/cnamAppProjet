@@ -225,8 +225,8 @@ require_once __DIR__ . '/../bootstrap.php';
 
 		foreach ($utilisateur as $client) {
 			$data[] = array(
-				'name' => $utilisateur->getNom(),
-				'surname' => $utilisateur->getPrenom()
+				'name' => $client->getNom(),
+				'surname' => $client->getPrenom()
 			);
 		}
 		
