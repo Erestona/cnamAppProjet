@@ -205,9 +205,16 @@ require_once __DIR__ . '/../bootstrap.php';
 	    
 		global $entityManager;
 	    $payload = getJWTToken($request);
+		$err = false
 	    $login = $body['login'] ?? "";
 		
-		$utilisateur = $entityManager->getRepository('Utilisateurs')->createQueryBuilder('u')
+		if (!preg_match("/^[a-zA-ZÀ-ÖØ-öø-ÿ '-âêîôûäëïöüàæçéèœùÂÊÎÔÛÄËÏÖÜÀÆÇÉÈŒÙ]{1,50}$/u", $login)) { 
+			$err = true; 
+		}  
+
+		if(!$err)
+		{
+			$utilisateur = $entityManager->getRepository('Utilisateurs')->createQueryBuilder('u')
 			->where('u.login = :login')
 			->setParameter('login', $login)
 			->getQuery()
@@ -216,13 +223,17 @@ require_once __DIR__ . '/../bootstrap.php';
 		$data[] = array(
 			'name' => $utilisateur->getNom(),
 			'surname' => $utilisateur->getPrenom()
-		);
+		)};
 		
 		$response = addHeaders($response);
 		$response = createJwT($response);
 		$response->getBody()->write(json_encode($data));
-	    
 	    return addHeaders ($response);
+	    
+		}else{
+			return $response->withStatus(401); 
+		}
+		
 	}
 
 	// APi d'authentification générant un JWT
