@@ -212,8 +212,8 @@ require_once __DIR__ . '/../bootstrap.php';
 		$utilisateur = $utilisateursRepository->findBy(array('login' => $login));
 		
 		$data[] = array(
-			'name' => $produit->getNom(),
-			'surname' => $produit->getPrenom()
+			'name' => $utilisateur->getNom(),
+			'surname' => $utilisateur->getPrenom()
 		);
 		
 		$response = addHeaders($response);
