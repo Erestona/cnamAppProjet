@@ -234,7 +234,7 @@ require_once __DIR__ . '/../bootstrap.php';
 	    return addHeaders ($response);
 	    
 		}else{
-			return $response->withStatus(401); 
+			return $response->withStatus(500); 
 		}
 		
 	}
