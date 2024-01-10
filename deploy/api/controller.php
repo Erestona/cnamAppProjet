@@ -205,7 +205,8 @@ require_once __DIR__ . '/../bootstrap.php';
 	    
 		global $entityManager;
 	    $payload = getJWTToken($request);
-		$err = false
+		$err = false;
+
 	    $login = $body['login'] ?? "";
 		
 		if (!preg_match("/^[a-zA-ZÀ-ÖØ-öø-ÿ '-âêîôûäëïöüàæçéèœùÂÊÎÔÛÄËÏÖÜÀÆÇÉÈŒÙ]{1,50}$/u", $login)) { 
@@ -215,10 +216,11 @@ require_once __DIR__ . '/../bootstrap.php';
 		if(!$err)
 		{
 			$utilisateur = $entityManager->getRepository('Utilisateurs')->createQueryBuilder('u')
-			->where('u.login = :login')
+			->where('u.login LIKE :login')
 			->setParameter('login', $login)
 			->getQuery()
 			->getResult();
+
 		foreach ($utilisateur as $client) {
 		$data[] = array(
 			'name' => $utilisateur->getNom(),
