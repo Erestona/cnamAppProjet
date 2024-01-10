@@ -207,11 +207,14 @@ require_once __DIR__ . '/../bootstrap.php';
 	    $payload = getJWTToken($request);
 	    $login = $body['login'] ?? "";
 		
-		$utilisateursRepository = $entityManager->getRepository('Utilisateurs');
-
-		$utilisateur = $utilisateursRepository->findOneBy(array('login' => $login));
+		$utilisateur = $entityManager->getRepository('Utilisateurs')->createQueryBuilder('u')
+			->where('u.login = :login')
+			->setParameter('login', $login)
+			->getQuery()
+			->getResult();
 		
 		$data[] = array(
+
 			'name' => $utilisateur->getNom(),
 			'surname' => $utilisateur->getPrenom()
 		);
