@@ -35,26 +35,26 @@ require_once __DIR__ . '/../bootstrap.php';
 				//$products = $productRepository->findBy(array('price' => $filtre));
 				//$products += $productRepository->findBy(array('category' =>$filtre));
 
-				$products = $entityManager->getRepository("Product")->createQueryBuilder('p')
+				$produits = $entityManager->getRepository("Product")->createQueryBuilder('p')
 					->where('p.price LIKE :price OR p.category LIKE :category')
 					->setParameter('price', '%'.$filtre.'%')
 					->setParameter('category', '%'.$filtre.'%')
 					->getQuery()
 					->getResult();
 
-				if ($products) {
-					$data = array();
-					foreach ($products as $product) {
-						$data[] = array(
-							'id' => $product->getId(),
-							'name' => $product->getName(),
-							'price' => $product->getPrice(),
-							'category' => $product->getCategory()
-						);
-					}
-					$response = addHeaders($response);
-					$response = createJwT($response);
-					$response->getBody()->write(json_encode($data));
+					if ($produits) {
+						$data = array();
+						foreach ($produits as $produit) {
+							$data[] = array(
+								'id' => $produit->getId(),
+								'name' => $produit->getName(),
+								'price' => $produit->getPrice(),
+								'category' => $produit->getCategory()
+							);
+						}
+						$response = addHeaders($response);
+						$response = createJwT($response);
+						$response->getBody()->write(json_encode($data));
 			} else {
 
 				$response = getCatalogue($request,$response,$args);
@@ -78,16 +78,16 @@ require_once __DIR__ . '/../bootstrap.php';
 	    // $response->getBody()->write(json_encode($flux));
 	    
 
-		$productRepository = $entityManager->getRepository('Product');
-		$products = $productRepository->findAll();
-		if ($products) {
+		$produitRepository = $entityManager->getRepository('Product');
+		$produits = $produitRepository->findAll();
+		if ($produits) {
 			$data = array();
-			foreach ($products as $product) {
+			foreach ($produits as $produit) {
 				$data[] = array(
-					'id' => $product->getId(),
-					'name' => $product->getName(),
-					'price' => $product->getPrice(),
-					'category' => $product->getCategory()
+					'id' => $produit->getId(),
+					'name' => $produit->getName(),
+					'price' => $produit->getPrice(),
+					'category' => $produit->getCategory()
 				);
 			}
 			$response = addHeaders($response);
