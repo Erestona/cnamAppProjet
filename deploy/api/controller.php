@@ -222,10 +222,11 @@ require_once __DIR__ . '/../bootstrap.php';
 			->getResult();
 
 		foreach ($utilisateur as $client) {
-		$data[] = array(
-			'name' => $utilisateur->getNom(),
-			'surname' => $utilisateur->getPrenom()
-		)};
+			$data[] = array(
+				'name' => $utilisateur->getNom(),
+				'surname' => $utilisateur->getPrenom()
+			);
+		}
 		
 		$response = addHeaders($response);
 		$response = createJwT($response);
