@@ -42,7 +42,19 @@ require_once __DIR__ . '/../bootstrap.php';
 					->getQuery()
 					->getResult();
 
-				$response->getBody()->write(json_encode(($products)));
+				if ($products) {
+					$data = array();
+					foreach ($products as $product) {
+						$data[] = array(
+							'id' => $product->getId(),
+							'name' => $product->getName(),
+							'price' => $product->getPrice(),
+							'category' => $product->getCategory()
+						);
+					}
+					$response = addHeaders($response);
+					$response = createJwT($response);
+					$response->getBody()->write(json_encode($data));
 			} else {
 
 				$response = getCatalogue($request,$response,$args);
@@ -66,16 +78,16 @@ require_once __DIR__ . '/../bootstrap.php';
 	    // $response->getBody()->write(json_encode($flux));
 	    
 
-		$produitRepository = $entityManager->getRepository('Product');
-		$produits = $produitRepository->findAll();
-		if ($produits) {
+		$productRepository = $entityManager->getRepository('Product');
+		$products = $productRepository->findAll();
+		if ($products) {
 			$data = array();
-			foreach ($produits as $produit) {
+			foreach ($products as $product) {
 				$data[] = array(
-					'id' => $produit->getId(),
-					'name' => $produit->getName(),
-					'price' => $produit->getPrice(),
-					'category' => $produit->getCategory()
+					'id' => $product->getId(),
+					'name' => $product->getName(),
+					'price' => $product->getPrice(),
+					'category' => $product->getCategory()
 				);
 			}
 			$response = addHeaders($response);
