@@ -210,9 +210,14 @@ require_once __DIR__ . '/../bootstrap.php';
 
 		$utilisateur = $utilisateursRepository->findBy(array('login' => $login));
 		
-		$flux = $utilisateur;
-	    
-	    $response->getBody()->write(json_encode($flux));
+		$data[] = array(
+			'name' => $produit->getNom(),
+			'surname' => $produit->getPrenom()
+		);
+		
+		$response = addHeaders($response);
+		$response = createJwT($response);
+		$response->getBody()->write(json_encode($data));
 	    
 	    return addHeaders ($response);
 	}
