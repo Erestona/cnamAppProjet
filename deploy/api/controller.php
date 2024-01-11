@@ -208,9 +208,7 @@ require_once __DIR__ . '/../bootstrap.php';
 		$err = false;
 
 	    $login = $body['login'] ?? "";
-		
-		var_dump($body);
-
+				
 		if (!preg_match("/^[a-zA-ZÀ-ÖØ-öø-ÿ '-âêîôûäëïöüàæçéèœùÂÊÎÔÛÄËÏÖÜÀÆÇÉÈŒÙ]{1,50}$/u", $login)) { 
 			$err = true; 
 		}  
@@ -224,6 +222,7 @@ require_once __DIR__ . '/../bootstrap.php';
 			->getQuery()
 			->getResult();
 			*/
+			
 			$utilisateur = $utilisateursRepository->findOneBy(array('login' => $login));
 			
 			
