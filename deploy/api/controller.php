@@ -207,7 +207,7 @@ require_once __DIR__ . '/../bootstrap.php';
 	    $payload = getJWTToken($request);
 		$err = false;
 
-	    $login = $body['login'] ?? "";
+	    $login = $payload['login'];
 				
 		/*
 		if (!preg_match("/^[a-zA-ZÀ-ÖØ-öø-ÿ '-âêîôûäëïöüàæçéèœùÂÊÎÔÛÄËÏÖÜÀÆÇÉÈŒÙ]{1,50}$/u", $login)) { 
