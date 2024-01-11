@@ -207,7 +207,7 @@ require_once __DIR__ . '/../bootstrap.php';
 	    $payload = $request->getParsedBody();
 
 		$err = false;
-		$login = $args['filtre'];
+		$login = $args['login'];
 			
 				
 		/*
