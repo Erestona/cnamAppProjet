@@ -141,7 +141,7 @@ require_once __DIR__ . '/../bootstrap.php';
 		}  
 
 		$codepostal = $payload['codepostal'];
-		if (!preg_match("/^[a-zA-ZÀ-ÖØ-öø-ÿ '-âêîôûäëïöüàæçéèœùÂÊÎÔÛÄËÏÖÜÀÆÇÉÈŒÙ]{1,50}$/u", $codepostal)) { 
+		if (!preg_match("/^(?:0[1-9]|[1-8]\d|9[0-8])\d{3}$/u", $codepostal)) { 
 			$err = true; 
 		}  
 
@@ -151,7 +151,7 @@ require_once __DIR__ . '/../bootstrap.php';
 		}  
 
 		$email = $payload['email'];
-		if (!preg_match("/^[a-zA-ZÀ-ÖØ-öø-ÿ '-âêîôûäëïöüàæçéèœùÂÊÎÔÛÄËÏÖÜÀÆÇÉÈŒÙ]{1,50}$/u", $email)) { 
+		if (!preg_match("/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/u", $email)) { 
 			$err = true; 
 		}  
 
@@ -161,7 +161,7 @@ require_once __DIR__ . '/../bootstrap.php';
 		}  
 
 		$telephone = $payload['telephone'];
-		if (!preg_match("/^[a-zA-ZÀ-ÖØ-öø-ÿ '-âêîôûäëïöüàæçéèœùÂÊÎÔÛÄËÏÖÜÀÆÇÉÈŒÙ]{1,50}$/u", $telephone)) { 
+		if (!preg_match("/^((\+)33|0|0033)[1-9](\d{2}){4}$/u", $telephone)) { 
 			$err = true; 
 		}  
 
