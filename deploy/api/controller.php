@@ -229,8 +229,8 @@ require_once __DIR__ . '/../bootstrap.php';
 			
 			
 			$data[] = array(
-				'name' => $utilisateur->getNom(),
-				'surname' => $utilisateur->getPrenom()
+				'nom' => $utilisateur->getNom(),
+				'prenom' => $utilisateur->getPrenom()
 			);
 		
 		
