@@ -141,7 +141,7 @@ require_once __DIR__ . '/../bootstrap.php';
 		}  
 
 		$codepostal = $payload['codepostal'];
-		if (!preg_match("/^(?:0[1-9]|[1-8]\d|9[0-8])\d{3}$/u", $codepostal)) { 
+		if (!preg_match("/^\d{5}(?:\s*[A-Za-z]{1})?$/u", $codepostal)) { 
 			$err = true; 
 		}  
 
@@ -161,7 +161,7 @@ require_once __DIR__ . '/../bootstrap.php';
 		}  
 
 		$telephone = $payload['telephone'];
-		if (!preg_match("/^((\+)33|0|0033)[1-9](\d{2}){4}$/u", $telephone)) { 
+		if (!preg_match("/^0[1-9](?:[ .-]?\d{2}){4}$/u", $telephone)) { 
 			$err = true; 
 		}  
 
