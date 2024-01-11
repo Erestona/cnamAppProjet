@@ -151,7 +151,7 @@ require_once __DIR__ . '/../bootstrap.php';
 		}  
 
 		$email = $payload['email'];
-		if (!preg_match("/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/u", $email)) { 
+		if (!preg_match("/^[\w-\.]+@([\w-]+\.)+[\w-]{1,50}$/u", $email)) { 
 			$err = true; 
 		}  
 
