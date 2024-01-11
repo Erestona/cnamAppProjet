@@ -222,7 +222,7 @@ require_once __DIR__ . '/../bootstrap.php';
 			->getQuery()
 			->getResult();
 			*/
-			
+			$utilisateursRepository = $entityManager->getRepository('Utilisateurs');
 			$utilisateur = $utilisateursRepository->findOneBy(array('login' => $login));
 			
 			
