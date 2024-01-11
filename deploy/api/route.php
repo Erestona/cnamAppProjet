@@ -13,7 +13,7 @@
 	//$app->options('/api/utilisateur', 'optionsUtilisateur');
 
 	// API Nécessitant un Jwt valide
-	$app->get('/api/utilisateur/get', 'getUtilisateur');
+	$app->get('/api/utilisateur/get/{login}', 'getUtilisateur');
 
 	// APi d'authentification générant un JWT
 	$app->post('/api/utilisateur/login', 'postLogin');
