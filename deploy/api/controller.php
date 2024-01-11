@@ -204,10 +204,10 @@ require_once __DIR__ . '/../bootstrap.php';
 	function getUtilisateur (Request $request, Response $response, $args) {
 	    
 		global $entityManager;
-	    $payload = getJWTToken($request);
-		$err = false;
+	    $payload = $request->getParsedBody();
 
-	    $login = $payload['login'];
+		$err = false;
+		$login = $body['login'] ?? "";
 				
 		/*
 		if (!preg_match("/^[a-zA-ZÀ-ÖØ-öø-ÿ '-âêîôûäëïöüàæçéèœùÂÊÎÔÛÄËÏÖÜÀÆÇÉÈŒÙ]{1,50}$/u", $login)) { 
