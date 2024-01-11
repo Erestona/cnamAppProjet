@@ -207,7 +207,8 @@ require_once __DIR__ . '/../bootstrap.php';
 	    $payload = $request->getParsedBody();
 
 		$err = false;
-		$login = $body['login'] ?? "";
+		$login = $args['filtre'];
+			
 				
 		/*
 		if (!preg_match("/^[a-zA-ZÀ-ÖØ-öø-ÿ '-âêîôûäëïöüàæçéèœùÂÊÎÔÛÄËÏÖÜÀÆÇÉÈŒÙ]{1,50}$/u", $login)) { 
@@ -234,10 +235,10 @@ require_once __DIR__ . '/../bootstrap.php';
 			);
 		
 		
-		$response = addHeaders($response);
-		$response = createJwT($response);
-		$response->getBody()->write(json_encode($data));
-	    return addHeaders ($response);
+			$response = addHeaders($response);
+			$response = createJwT($response);
+			$response->getBody()->write(json_encode($data));
+			return addHeaders ($response);
 	    
 		}else{
 			return $response->withStatus(401); 
