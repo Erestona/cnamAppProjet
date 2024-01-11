@@ -177,7 +177,6 @@ require_once __DIR__ . '/../bootstrap.php';
 
 		if (!$err) {
 
-			error_log(print_r($entityManager, true));
 			$utilisateur = new Utilisateurs;
 			$utilisateur->setPrenom($prenom);
 			$utilisateur->setNom($nom);
